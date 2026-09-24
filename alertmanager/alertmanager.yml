@@ -1,0 +1,10 @@
+# Demo config: alerts are grouped and shown in the Alertmanager UI (no external notifier).
+route:
+  receiver: default
+  group_by: ["alertname"]
+  group_wait: 5s
+  group_interval: 30s
+  repeat_interval: 1h
+
+receivers:
+  - name: default

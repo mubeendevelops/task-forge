@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskForge</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    // Apply the saved theme before paint to avoid a flash.
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="header">
+    <h1><span class="logo" aria-hidden="true">✓</span> TaskForge</h1>
+    <button id="theme" class="icon-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">◐</span>
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <form id="add-form" class="add-form">
+        <label for="title" class="sr-only">New task</label>
+        <input id="title" name="title" type="text" placeholder="What needs doing?" autocomplete="off" maxlength="200" required>
+        <button class="btn primary" type="submit">Add task</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="Filter tasks">
+          <button role="tab" class="tab" data-filter="all" aria-selected="true">All</button>
+          <button role="tab" class="tab" data-filter="active" aria-selected="false">Active</button>
+          <button role="tab" class="tab" data-filter="done" aria-selected="false">Done</button>
+        </div>
+        <span id="count" class="count" aria-live="polite"></span>
+      </div>
+      <ul id="list" class="list" aria-busy="true"></ul>
+      <div id="state" class="state"><span class="spinner" aria-hidden="true"></span> Loading…</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Demo links:
+    <a href="http://localhost:3000" target="_blank" rel="noopener">Grafana</a> ·
+    <a href="http://localhost:9090" target="_blank" rel="noopener">Prometheus</a>
+  </footer>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

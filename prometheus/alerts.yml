@@ -1,0 +1,22 @@
+groups:
+  - name: taskforge
+    rules:
+      # More than 10% of requests answered with 5xx over the last minute.
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(app_http_requests_total{status=~"5.."}[1m]))
+            / sum(rate(app_http_requests_total[1m])) > 0.10
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: "More than 10% of requests are failing with 5xx"
+
+      # Prometheus cannot scrape the app.
+      - alert: AppDown
+        expr: up{job="taskforge"} == 0
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: "TaskForge app is down"
