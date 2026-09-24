@@ -1,6 +1,48 @@
 # TaskForge Demo Guide
 
-## Part 1: Demo Script (5–7 min)
+## Part 1: Windows Setup
+
+1. Install **Docker Desktop**: https://www.docker.com/products/docker-desktop/ . Keep **Use WSL 2 instead of Hyper-V** ticked in the installer, then restart Windows if asked.
+2. Start **Docker Desktop** from the Start menu. Wait until the whale icon says **Engine running**.
+3. Get the project (pick one):
+   - Git: `git clone https://github.com/mubeendevelops/task-forge.git`
+   - Zip: unzip the project, then open the folder.
+4. Open **PowerShell** in the project folder (`cd task-forge`, or right-click the folder > **Open in Terminal**).
+5. Run the setup script:
+   ```powershell
+   .\setup.ps1
+   ```
+   If Windows blocks the script, run this once, then run `.\setup.ps1` again:
+   ```powershell
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   ```
+6. Verify all four containers are running (app should say `healthy`):
+   ```powershell
+   docker compose ps
+   ```
+
+| Service | URL |
+|---|---|
+| App | http://localhost:5000 |
+| Metrics | http://localhost:5000/metrics |
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 |
+| Alertmanager | http://localhost:9093 |
+
+**Grafana login:** `admin` / `admin` (anonymous viewing also works). To stop everything: `docker compose down`.
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| "Docker daemon is not running" | Start Docker Desktop, wait for **Engine running**, run `.\setup.ps1` again. |
+| "port is already allocated" | Find the program using it: `netstat -ano \| findstr :5000` (also try 3000, 9090, 9093). Close it, or run `docker compose down` if it is an old TaskForge. |
+| "running scripts is disabled" | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`, then `.\setup.ps1`. |
+| Grafana panels show "No data" | Send some traffic first: `python scripts/load_test.py --duration 60` (or click around in the app). Also check http://localhost:9090/targets shows the app **UP**, and set the time range to **Last 15 minutes**. |
+
+---
+
+## Part 2: Demo Script (5–7 min)
 
 **Before you start:** open a terminal in the project folder and run `./setup.sh` (Windows: `.\setup.ps1`).
 Wait until it prints the URLs. Keep these tabs open: App, Prometheus, Grafana, Alertmanager.
@@ -60,7 +102,7 @@ Cleanup: `docker compose down`
 
 ---
 
-## Part 2: Viva Concepts
+## Part 3: Viva Concepts
 
 ### DevOps
 - **What:** Practices that connect writing code with running it: automate build, test, deploy and monitoring. Like a factory line instead of hand-crafting.
