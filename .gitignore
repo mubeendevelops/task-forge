@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Test / lint caches
+.pytest_cache/
+.flake8_cache/
+.coverage
+htmlcov/
+
+# Environment files (may hold secrets)
+.env
+.env.*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
